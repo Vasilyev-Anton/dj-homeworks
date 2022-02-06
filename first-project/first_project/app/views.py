@@ -29,4 +29,5 @@ def time_view(request):
 
 def workdir_view(request):
     res = os.listdir(path='.')
-    return HttpResponse(res)
+    res_str = ', '.join(res)
+    return HttpResponse(res_str)
