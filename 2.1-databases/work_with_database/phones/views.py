@@ -3,8 +3,6 @@ from django.shortcuts import render, redirect
 
 from phones.models import Phone
 
-phone = dict()
-
 
 def index(request):
     return redirect('catalog')
