@@ -2,31 +2,31 @@ from django.contrib import admin
 from django.core.exceptions import ValidationError
 from django.forms import BaseInlineFormSet
 
-from .models import Article, Tag, ArticleTags
+from .models import Article, Tag, Scope
 
 
-class ArticleTagsInlineFormset(BaseInlineFormSet):
+class ScopeInlineFormset(BaseInlineFormSet):
     def clean(self):
-        # for form in self.forms:
-        #     # В form.cleaned_data будет словарь с данными каждой отдельной формы, которые вы можете проверить
-        #     form.cleaned_data
-        #     # вызовом исключения ValidationError можно указать админке о наличие ошибки таким образом объект не будет сохранен,
-        #     # а пользователю выведется соответствующее сообщение об ошибке
-        #     raise ValidationError('Тут всегда ошибка')
-        # return super().clean()  # вызываем базовый код переопределяемого метода
-        pass
+        count = list()
+        [count.append(form.cleaned_data['is_main']) for form in self.forms]
+        counter = sum(count)
+        if counter > 1:
+            raise ValidationError('Основным может быть только один раздел')
+        elif counter == 0:
+            raise ValidationError('Укажите основной раздел')
+        return super().clean()
 
 
-class ArticleTagsInline(admin.TabularInline):
-    model = ArticleTags
+class ScopeInline(admin.TabularInline):
+    model = Scope
     extra = 0
-    formset = ArticleTagsInlineFormset
+    formset = ScopeInlineFormset
 
 
 @admin.register(Article)
 class ArticleAdmin(admin.ModelAdmin):
     list_display = ['id', 'title', 'text', 'published_at', 'image']
-    inlines = [ArticleTagsInline, ]
+    inlines = [ScopeInline, ]
 
 
 @admin.register(Tag)
