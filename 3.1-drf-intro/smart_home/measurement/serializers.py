@@ -1,13 +1,15 @@
 from rest_framework import serializers
 from measurement.models import Measurement, Sensor
+
+
 # TODO: опишите необходимые сериализаторы
 
 
 class MeasurementSerializer(serializers.ModelSerializer):
-    # TODO: запрос №2, 5 получение инфы по конкретному датчику. Выдается полная инфа по датчику
+    # TODO: запрос №2, 5 получение информации по конкретному датчику, изменение датчика.
     class Meta:
         model = Measurement
-        fields = ['temperature', 'created_at']
+        fields = ['temperature', 'created_at', 'updated_at']
 
 
 class SensorDetailUpdateSerializer(serializers.ModelSerializer):
@@ -29,12 +31,4 @@ class AddTemperatureSerializer(serializers.ModelSerializer):
     # TODO: запрос №3 указываются ID датчика и температура
     class Meta:
         model = Measurement
-        fields = ['temperature']
-
-
-class AddMeasurementSerializer(serializers.ModelSerializer):
-    temperature = AddTemperatureSerializer()
-
-    class Meta:
-        model = Sensor
-        fields = ['id', 'temperature']
+        fields = ['sensor', 'temperature']
