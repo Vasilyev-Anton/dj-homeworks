@@ -1,34 +1,31 @@
 # TODO: опишите необходимые обработчики, рекомендуется использовать generics APIView классы:
 # TODO: ListCreateAPIView, RetrieveUpdateAPIView, CreateAPIView
-from rest_framework.generics import ListCreateAPIView, RetrieveUpdateAPIView, CreateAPIView, get_object_or_404
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateAPIView, get_object_or_404
+from rest_framework.permissions import AllowAny
+
 from measurement.models import Sensor
-from measurement.serializers import SensorListSerializer, SensorDetailSerializer, SensorCreateUpdateSerializer, \
-    AddMeasurementSerializer
+from measurement.serializers import AddMeasurementSerializer, SensorDetailUpdateSerializer, SensorCreateListSerializer
 
 
-class SensorListView(ListCreateAPIView):
+class SensorCreateListView(ListCreateAPIView):
     queryset = Sensor.objects.all()
-    serializer_class = SensorListSerializer
+    serializer_class = SensorCreateListSerializer
+
+    def post(self, request, *args, **kwargs):
+        return self.create(request, *args, **kwargs)
 
 
-class SensorDetailView(RetrieveUpdateAPIView):
+class SensorDetailUpdateView(RetrieveUpdateAPIView):
     queryset = Sensor.objects.all()
-    serializer_class = SensorDetailSerializer
+    serializer_class = SensorDetailUpdateSerializer
 
-
-class CreateSensorView(CreateAPIView):
-    serializer_class = SensorCreateUpdateSerializer
-
-    def perform_create(self, serializer):
-        sensor = get_object_or_404(Sensor, name=self.request.data.get('name'), description=self.request.data.get('description'))
-        return serializer.save(sensor=sensor)
-
-
-class UpdateSensorView(RetrieveUpdateAPIView):
-    queryset = Sensor.objects.all()
-    serializer_class = SensorCreateUpdateSerializer
+    def put(self, request, *args, **kwargs):
+        return self.update(request, *args, **kwargs)
 
 
 class AddMeasurementView(RetrieveUpdateAPIView):
     queryset = Sensor.objects.all()
     serializer_class = AddMeasurementSerializer
+
+    # def patch(self, request, *args, **kwargs):
+    #     return self.partial_update(request, *args, **kwargs)

@@ -4,13 +4,13 @@ from measurement.models import Measurement, Sensor
 
 
 class MeasurementSerializer(serializers.ModelSerializer):
-    # TODO: запрос №5 получение инфы по конкретному датчику. Выдается полная инфа по датчику
+    # TODO: запрос №2, 5 получение инфы по конкретному датчику. Выдается полная инфа по датчику
     class Meta:
         model = Measurement
         fields = ['temperature', 'created_at']
 
 
-class SensorDetailSerializer(serializers.ModelSerializer):
+class SensorDetailUpdateSerializer(serializers.ModelSerializer):
     measurements = MeasurementSerializer(read_only=True, many=True)
 
     class Meta:
@@ -18,18 +18,11 @@ class SensorDetailSerializer(serializers.ModelSerializer):
         fields = ['id', 'name', 'description', 'measurements']
 
 
-class SensorListSerializer(serializers.ModelSerializer):
-    # TODO: запрос №4 получение списка датчиков. Выдается список с краткой инфой: ID, название и описание
+class SensorCreateListSerializer(serializers.ModelSerializer):
+    # TODO: запрос №1,  4. ID, название и описание
     class Meta:
         model = Sensor
         fields = ['id', 'name', 'description']
-
-
-class SensorCreateUpdateSerializer(serializers.ModelSerializer):
-    # TODO: запрос №1,2 указываются название и описание датчика
-    class Meta:
-        model = Sensor
-        fields = ['name', 'description']
 
 
 class AddTemperatureSerializer(serializers.ModelSerializer):
@@ -40,8 +33,8 @@ class AddTemperatureSerializer(serializers.ModelSerializer):
 
 
 class AddMeasurementSerializer(serializers.ModelSerializer):
-    measurement = AddTemperatureSerializer()
+    temperature = AddTemperatureSerializer()
 
     class Meta:
         model = Sensor
-        fields = ['id', 'measurement']
+        fields = ['id', 'temperature']
