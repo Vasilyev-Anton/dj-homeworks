@@ -1,6 +1,7 @@
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import ModelViewSet
 
+from advertisements.filters import AdvertisementFilter
 from advertisements.models import Advertisement
 from advertisements.serializers import AdvertisementSerializer
 
@@ -11,7 +12,7 @@ class AdvertisementViewSet(ModelViewSet):
     serializer_class = AdvertisementSerializer
     # TODO: настройте ViewSet, укажите атрибуты для кверисета,
     #   сериализаторов и фильтров
-    filterset_fields = ['creator__id']
+    filterset_class = AdvertisementFilter
 
     def get_permissions(self):
         """Получение прав для действий."""
