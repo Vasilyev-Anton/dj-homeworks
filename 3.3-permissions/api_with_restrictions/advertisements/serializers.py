@@ -22,13 +22,11 @@ class AdvertisementSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Advertisement
-        fields = ('id', 'title', 'description', 'creator',
-                  'status', 'created_at', )
-        read_only_fields = ['user', ]
+        fields = '__all__'
 
     def create(self, validated_data):
         """Метод для создания"""
-
+        print(validated_data)
         # Простановка значения поля создатель по-умолчанию.
         # Текущий пользователь является создателем объявления
         # изменить или переопределить его через API нельзя.
@@ -42,5 +40,9 @@ class AdvertisementSerializer(serializers.ModelSerializer):
         """Метод для валидации. Вызывается при создании и обновлении."""
 
         # TODO: добавьте требуемую валидацию
+        validated_data = Advertisement.objects.all().values()
+        for user in validated_data:
+            if user['creator_id'] == data:
+                print(user)
 
         return data
