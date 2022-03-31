@@ -26,7 +26,7 @@ class AdvertisementSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         """Метод для создания"""
-        print(validated_data)
+
         # Простановка значения поля создатель по-умолчанию.
         # Текущий пользователь является создателем объявления
         # изменить или переопределить его через API нельзя.
